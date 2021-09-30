@@ -17,8 +17,8 @@ public class PersonDecorator implements PersonMapper {
     PersonMapper personMapper;
 
     @Override
-    public Person personToPersonDTO(PersonDTO personDTO) {
-        Person person=personMapper.personToPersonDTO(personDTO);
+    public Person personDTOToPerson(PersonDTO personDTO) {
+        Person person=personMapper.personDTOToPerson(personDTO);
         Date date=new Date(System.currentTimeMillis());
 
         if(date.getYear()>=personDTO.getBirthday().getYear())

@@ -1,6 +1,5 @@
 package com.example.springbootentityoperations.service;
 
-import com.example.springbootentityoperations.decorator.PersonDecorator;
 import com.example.springbootentityoperations.dto.PersonDTO;
 import com.example.springbootentityoperations.mapper.PersonMapper;
 import com.example.springbootentityoperations.model.Person;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -26,7 +24,7 @@ public class PersonServiceImpl implements PersonService{
 
     @Override
     public Person createPerson(PersonDTO personDTO) {
-        Person person=personMapper.personToPersonDTO(personDTO);
+        Person person=personMapper.personDTOToPerson(personDTO);
 
 
         return personRepository.save(person);

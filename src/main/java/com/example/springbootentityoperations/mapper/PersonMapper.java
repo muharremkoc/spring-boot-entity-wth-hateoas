@@ -16,7 +16,7 @@ public interface PersonMapper {
 
     @Mapping(target = "firstName",source = "firstName")
     @Mapping(target = "gender",source = "gender")
-    Person personToPersonDTO(PersonDTO personDTO);
+    Person personDTOToPerson(PersonDTO personDTO);
 }
 
 
