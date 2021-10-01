@@ -1,5 +1,6 @@
 package com.example.springbootentityoperations.service;
 
+import com.example.springbootentityoperations.decorator.PersonDecorator;
 import com.example.springbootentityoperations.dto.PersonDTO;
 import com.example.springbootentityoperations.mapper.PersonMapper;
 import com.example.springbootentityoperations.model.Person;
@@ -21,13 +22,19 @@ public class PersonServiceImpl implements PersonService{
 
     final PersonMapper personMapper;
 
+    final PersonDecorator personDecorator;
+
 
     @Override
     public Person createPerson(PersonDTO personDTO) {
+
         Person person=personMapper.personDTOToPerson(personDTO);
 
 
-        return personRepository.save(person);
+        Person savePerson=personDecorator.personWithPersonLink(person);
+
+
+        return personRepository.save(savePerson);
     }
 
     @Override
@@ -59,6 +66,13 @@ public class PersonServiceImpl implements PersonService{
 
     @Override
     public Person getPerson(int id) {
-        return personRepository.findById(id).get();
+
+        Person getPerson=personRepository.findById(id).get();
+
+        Person decorPerson=personDecorator.personWithPersonLink(getPerson);
+
+        return decorPerson;
+
+
     }
 }

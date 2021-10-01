@@ -20,7 +20,7 @@ public class Person extends RepresentationModel<Person> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    int id;
+    Integer id;
 
     String firstName;
 

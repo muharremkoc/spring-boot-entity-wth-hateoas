@@ -17,6 +17,9 @@ public interface PersonMapper {
     @Mapping(target = "firstName",source = "firstName")
     @Mapping(target = "gender",source = "gender")
     Person personDTOToPerson(PersonDTO personDTO);
+
+
+  Person personWithPersonLink(Person person);
 }
 
 

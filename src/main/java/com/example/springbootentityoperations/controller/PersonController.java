@@ -1,5 +1,6 @@
 package com.example.springbootentityoperations.controller;
 
+import com.example.springbootentityoperations.decorator.PersonDecorator;
 import com.example.springbootentityoperations.dto.PersonDTO;
 import com.example.springbootentityoperations.mapper.PersonMapper;
 import com.example.springbootentityoperations.model.Person;
@@ -26,23 +27,16 @@ public class PersonController {
 
 
     final PersonService personService;
-    final PersonMapper personMapper;
 
+    final PersonDecorator personDecorator;
     @PostMapping("/person")
     public ResponseEntity<Person> createPerson(@RequestBody PersonDTO personDTO){
 
 
 
         Person person=personService.createPerson(personDTO);
-        var links = new Link[]{
-              linkTo(methodOn(PersonController.class).getPerson(person.getId())).withSelfRel()
 
-       };
-
-        person.add(links);
         try {
-
-
             return new ResponseEntity<Person>(person, HttpStatus.CREATED);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -55,14 +49,6 @@ public class PersonController {
         try {
             List<Person> persons = personService.getPersons();
 
-            persons.stream().forEach(person -> {
-                        var links = new Link[]{
-                                linkTo(methodOn(PersonController.class).getPerson(person.getId())).withSelfRel()
-
-                        };
-                        person.add(links);
-                    }
-                    );
             return ResponseEntity.ok(persons);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -70,7 +56,8 @@ public class PersonController {
     }
 
     @PutMapping("/person/{id}")
-    public ResponseEntity<Person> updatePerson(@PathVariable("id") int id,@RequestBody PersonDTO personDTO){
+    public ResponseEntity<Person> updatePerson(@PathVariable("id") Integer id,@RequestBody PersonDTO personDTO){
+
         Person person=personService.updatePerson(id,personDTO);
 
         var links = new Link[]{
@@ -96,9 +83,14 @@ public class PersonController {
     public Person getPerson(@PathVariable("id")int id){
         Person person=personService.getPerson(id);
         var links = new Link[]{
-                linkTo(methodOn(PersonController.class).getPerson(person.getId())).withSelfRel()
+                linkTo(PersonController.class).slash("/person").slash(person.getId()).withRel("getPerson").withTitle("GET PERSON"),
+                linkTo(methodOn(PersonController.class).getPersons()).withRel("Person")
+
 
         };
+
+
+        person.add(links);
         return personService.getPerson(id);
     }
 
